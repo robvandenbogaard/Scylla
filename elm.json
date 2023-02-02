@@ -16,7 +16,8 @@
             "elm/svg": "1.0.1",
             "elm/time": "1.0.0",
             "elm/url": "1.0.0",
-            "hecrj/html-parser": "2.0.0"
+            "hecrj/html-parser": "2.0.0",
+            "mthadley/elm-hash-routing": "1.0.1"
         },
         "indirect": {
             "elm/bytes": "1.0.7",

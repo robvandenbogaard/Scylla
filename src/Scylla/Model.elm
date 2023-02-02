@@ -1,28 +1,29 @@
 module Scylla.Model exposing (..)
-import Scylla.Api exposing (..)
-import Scylla.Room exposing (getLocalDisplayName)
-import Scylla.Sync exposing (SyncResponse, HistoryResponse)
-import Scylla.ListUtils exposing (findFirst)
-import Scylla.Room exposing (OpenRooms)
-import Scylla.UserData exposing (UserData, getSenderName)
-import Scylla.Sync.Rooms exposing (JoinedRoom)
-import Scylla.Sync.Push exposing (Ruleset)
-import Scylla.Sync.AccountData exposing (AccountData, directMessagesDecoder)
-import Scylla.Login exposing (LoginResponse, Username, Password)
-import Scylla.Route exposing (Route(..), RoomId)
-import Scylla.Messages exposing (..)
-import Scylla.Storage exposing (..)
-import Scylla.Markdown exposing (..)
-import Browser.Navigation as Nav
-import Browser.Dom exposing (Viewport)
-import Url.Builder
-import Dict exposing (Dict)
-import Time exposing (Posix)
-import File exposing (File)
-import Json.Decode as Decode
+
 import Browser
+import Browser.Dom exposing (Viewport)
+import Browser.Navigation as Nav
+import Dict exposing (Dict)
+import File exposing (File)
 import Http
+import Json.Decode as Decode
+import Scylla.Api exposing (..)
+import Scylla.ListUtils exposing (findFirst)
+import Scylla.Login exposing (LoginResponse, Password, Username)
+import Scylla.Markdown exposing (..)
+import Scylla.Messages exposing (..)
+import Scylla.Room exposing (OpenRooms, getLocalDisplayName)
+import Scylla.Route exposing (RoomId, Route(..))
+import Scylla.Storage exposing (..)
+import Scylla.Sync exposing (HistoryResponse, SyncResponse)
+import Scylla.Sync.AccountData exposing (AccountData, directMessagesDecoder)
+import Scylla.Sync.Push exposing (Ruleset)
+import Scylla.Sync.Rooms exposing (JoinedRoom)
+import Scylla.UserData exposing (UserData, getSenderName)
+import Time exposing (Posix)
 import Url exposing (Url)
+import Url.Builder
+
 
 type alias Model =
     { key : Nav.Key
@@ -35,15 +36,16 @@ type alias Model =
     , nextBatch : String
     , errors : List String
     , roomText : Dict RoomId String
-    , sending : Dict Int (RoomId, SendingMessage)
+    , sending : Dict Int ( RoomId, SendingMessage )
     , transactionId : Int
     , connected : Bool
     , searchText : String
     , rooms : OpenRooms
     }
 
-type Msg =
-    ChangeApiUrl ApiUrl -- During login screen: the API URL (homeserver)
+
+type Msg
+    = ChangeApiUrl ApiUrl -- During login screen: the API URL (homeserver)
     | ChangeLoginUsername Username -- During login screen: the username
     | ChangeLoginPassword Password -- During login screen: the password
     | AttemptLogin -- During login screen, login button presed
@@ -78,19 +80,37 @@ type Msg =
     | AttemptReconnect -- User wants to reconnect to server
     | UpdateSearchText String -- Change search text in room list
 
+
+rootUrl : String
+rootUrl =
+    "#"
+
+
 roomUrl : String -> String
-roomUrl s = Url.Builder.absolute [ "room", s ] []
+roomUrl s =
+    "#room/" ++ s
+
 
 loginUrl : String
-loginUrl = Url.Builder.absolute [ "login" ] []
+loginUrl =
+    "#login"
+
 
 currentRoomId : Model -> Maybe RoomId
-currentRoomId m = case m.route of
-    Room r -> Just r
-    _ -> Nothing
+currentRoomId m =
+    case m.route of
+        Room r ->
+            Just r
+
+        _ ->
+            Nothing
+
 
 roomLocalDisplayName : Model -> RoomId -> Username -> String
 roomLocalDisplayName m rid u =
     case Dict.get rid m.rooms of
-        Just rd -> getLocalDisplayName rd u
-        _ -> getSenderName u
+        Just rd ->
+            getLocalDisplayName rd u
+
+        _ ->
+            getSenderName u
