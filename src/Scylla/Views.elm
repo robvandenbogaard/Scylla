@@ -130,8 +130,20 @@ roomListView m =
                 List.map (\( k, v ) -> homeserverView m k v) <|
                     Dict.toList groups
     in
-    div [ class "rooms-wrapper" ]
-        [ h2 [] [ text "Rooms" ]
+    div
+        [ class "rooms-wrapper"
+        , style "overflow-x" "hidden"
+        , style "min-width" "auto"
+        , style "width" "auto"
+        , style "max-width"
+            (if m.roomsVisible then
+                "none"
+
+             else
+                "3em"
+            )
+        ]
+        [ h2 [ onClick RoomsToggle ] [ text "Rooms" ]
         , input
             [ class "room-search"
             , type_ "text"

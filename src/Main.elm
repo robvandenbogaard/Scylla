@@ -61,6 +61,7 @@ init _ url key =
             , connected = True
             , searchText = ""
             , rooms = emptyOpenRooms
+            , roomsVisible = True
             }
 
         cmd =
@@ -193,6 +194,9 @@ update msg model =
 
         UpdateSearchText s ->
             ( { model | searchText = s }, Cmd.none )
+
+        RoomsToggle ->
+            ( { model | roomsVisible = not model.roomsVisible }, Cmd.none )
 
 
 requestScrollCmd : Cmd Msg

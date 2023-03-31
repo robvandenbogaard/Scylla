@@ -41,6 +41,7 @@ type alias Model =
     , connected : Bool
     , searchText : String
     , rooms : OpenRooms
+    , roomsVisible : Bool
     }
 
 
@@ -79,6 +80,7 @@ type Msg
     | DismissError Int -- User dismisses error
     | AttemptReconnect -- User wants to reconnect to server
     | UpdateSearchText String -- Change search text in room list
+    | RoomsToggle
 
 
 rootUrl : String
