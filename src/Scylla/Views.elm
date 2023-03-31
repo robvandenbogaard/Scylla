@@ -199,7 +199,7 @@ roomListElementView m rid rd =
         ]
     <|
         roomNotificationCountView rd.unreadNotifications
-            ++ [ a [ href <| roomUrl rid, onClick RoomsToggle ] [ text name ] ]
+            ++ [ a [ href <| roomUrl rid ] [ text name ] ]
 
 
 roomNotificationCountView : UnreadNotificationCounts -> List (Html Msg)
