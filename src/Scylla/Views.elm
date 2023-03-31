@@ -131,7 +131,8 @@ roomListView m =
                     Dict.toList groups
     in
     div
-        [ class "rooms-wrapper"
+        [ onClick RoomsToggle
+        , class "rooms-wrapper"
         , style "overflow-x" "hidden"
         , style "min-width" "auto"
         , style "width" "auto"
@@ -143,7 +144,7 @@ roomListView m =
                 "3em"
             )
         ]
-        [ h2 [ onClick RoomsToggle ] [ text "Rooms" ]
+        [ h2 [] [ text "Rooms" ]
         , input
             [ class "room-search"
             , type_ "text"
