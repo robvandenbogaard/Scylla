@@ -1,7 +1,7 @@
 module Scylla.Views exposing (..)
 
 import Dict exposing (Dict)
-import Html exposing (Attribute, Html, a, button, div, h2, h3, img, input, p, source, span, table, td, text, textarea, tr, video)
+import Html exposing (Attribute, Html, a, audio, button, div, h2, h3, img, input, p, source, span, table, td, text, textarea, tr, video)
 import Html.Attributes exposing (class, classList, controls, href, id, placeholder, rows, src, style, type_, value)
 import Html.Events exposing (onClick, onInput, preventDefaultOn)
 import Html.Lazy exposing (lazy5)
@@ -458,9 +458,20 @@ roomEventFileView apiUrl re =
         fileData =
             Decode.decodeValue decoder re.content
     in
-    Maybe.map (\( url, name ) -> a [ href url, class "file-wrapper" ] [ iconView "file", text name ]) <|
-        Maybe.map (\( url, name ) -> ( contentRepositoryDownloadUrl apiUrl url, name )) <|
-            Result.toMaybe fileData
+    Result.toMaybe fileData
+        |> Maybe.map (\( url, name ) -> ( contentRepositoryDownloadUrl apiUrl url, name ))
+        |> Maybe.map
+            (\( url, name ) ->
+                case List.member (String.right 4 name) [ ".amr", ".mp3" ] of
+                    True ->
+                        span [ style "display" "flex" ]
+                            [ audio [ controls True, src url ] [ text name ]
+                            , a [ href url, class "file-wrapper" ] [ iconView "file", text name ]
+                            ]
+
+                    False ->
+                        a [ href url, class "file-wrapper" ] [ iconView "file", text name ]
+            )
 
 
 roomEventVideoView : ApiUrl -> MessageEvent -> Maybe (Html Msg)
