@@ -477,7 +477,7 @@ roomEventFileView apiUrl re =
             (\( url, name ) ->
                 case List.member (String.right 4 name) [ ".amr", ".mp3" ] of
                     True ->
-                        span [ style "display" "flex" ]
+                        span []
                             [ audio [ controls True, src url ] [ text name ]
                             , a [ href url, class "file-wrapper" ] [ iconView "file", text name ]
                             ]
